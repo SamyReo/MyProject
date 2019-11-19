@@ -13,12 +13,13 @@ variables:
   imageName: 'MyProject'
 
 steps:
-- task: Docker@0
+- task: Docker@2
   inputs:
     repository: $(imagename)
     command: build
-    dockerFile: DockerFile
+    dockerFile: '**/Dockerfile'
   displayName: 'Build docker image'
+
 - task: PublishBuildArtifacts@1
   inputs:
     artifactName: dist
