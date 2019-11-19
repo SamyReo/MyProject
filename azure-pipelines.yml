@@ -13,7 +13,7 @@ variables:
   imageName: 'MyProject'
 
 steps:
-- task: DockerImage
+- task: Docker@0
   inputs:
     repository: $(imagename)
     command: build
