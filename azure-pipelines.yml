@@ -9,17 +9,16 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+variables:
+  imageName: 'MyProject'
 
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+steps:
+- task: DockerImage
+  inputs:
+    repository: $(imagename)
+    command: build
+    dockerFile: DockerFile
+  displayName: 'Build docker image'
 - task: PublishBuildArtifacts@1
   inputs:
     artifactName: dist
