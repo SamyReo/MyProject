@@ -1,19 +1,12 @@
-FROM node:8
+FROM node:alpine AS builder
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-RUN npm ci --only=production
-
+WORKDIR /app
+RUN npm install -g @angular/cli
 COPY . .
 
-EXPOSE 8080
-CMD [ "npm", "start" ]
+RUN npm install && \
+    npm run build
 
-FROM nginx:stable-alpine
-LABEL version="1.0"
+FROM nginx:alpine
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
-WORKDIR /usr/share/nginx/html
-COPY dist/ .
+COPY --from=builder /app/dist/MyProject/* /usr/share/nginx/html/
